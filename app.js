@@ -46,7 +46,7 @@ function productInquiry(product, variant) {
 }
 function selectionInquiry() {
   const total =
-    Math.floor(bag.length / 2) * data.precio_duo +
+    Math.floor(bag.length / 2) * (data?.precio_duo ?? 0) +
     (bag.length % 2 ? bag[bag.length - 1].precio : 0);
   return [
     "¡Hola, MODAC! Quiero consultar por mi selección:",
@@ -202,7 +202,7 @@ function updateBag() {
         }),
     );
   const total =
-    Math.floor(bag.length / 2) * data.precio_duo +
+    Math.floor(bag.length / 2) * (data?.precio_duo ?? 0) +
     (bag.length % 2 ? bag[bag.length - 1].precio : 0);
   $("#bagTotal").textContent = bag.length
     ? "Total referencial: " + money(total)
@@ -229,6 +229,8 @@ $("#addBag").onclick = () => {
   }
   bag.push({ ...chosen, nombre: current.nombre });
   updateBag();
+  $("#detail").close();
+  $("#selection").showModal();
   toast("Añadido a tu selección ♡");
 };
 $("#openBag").onclick = () => {

@@ -101,3 +101,58 @@ main .duo-hero .coverflow-card img {
     height: clamp(132px, 44vw, 275px);
   }
 }
+
+main > .duo-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  align-items: center;
+  padding: clamp(18px, 3vw, 42px) clamp(16px, 4vw, 64px);
+  gap: clamp(12px, 3vw, 48px);
+}
+.duo-hero > .duo-copy {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+.duo-hero .duo-copy h1 {
+  color: #78051f;
+  font-size: clamp(38px, 5.1vw, 78px);
+}
+.duo-hero .duo-material {
+  margin: 0;
+  color: #78051f;
+}
+.duo-hero .duo-offer {
+  width: auto;
+  border-radius: 100px;
+  font-size: clamp(22px, 2.6vw, 45px);
+}
+main .duo-hero .hero-images { width: 100%; }
+main .duo-hero .coverflow { --slide-width: 32%; }
+main .duo-hero .coverflow .coverflow-card {
+  border-radius: 16px;
+}
+#coleccion .card {
+  border-color: #e5e6e8;
+  box-shadow: none;
+}
+@media (hover: hover) {
+  #coleccion .card:hover {
+    border-color: #b6002c;
+    box-shadow: 0 0 0 2px #b6002c, 0 8px 20px #a9002226;
+  }
+}
+#coleccion .card:focus-within:not(:has(:focus-visible)) { outline: none; }
+#coleccion .card-open:focus:not(:focus-visible) { outline: none; }
+#personaliza .polo-vista,
+#poloZoom .polo-vista { background: none; }
+.polo-vista > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+@media (max-width: 760px) {
+  main > .duo-hero { grid-template-columns: minmax(0, 1fr); }
+}

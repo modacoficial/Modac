@@ -8,13 +8,14 @@ const viewFiles = ["frente", "manga", "espalda-cherry-club"];
 
 function showPoloView(index) {
   currentPoloView = (index + viewNames.length) % viewNames.length;
-  const file = viewFiles[currentPoloView];
+  const source = new URL(
+    `./assets/polo-cerezas-${viewFiles[currentPoloView]}.webp`,
+    document.baseURI,
+  ).href;
   for (const view of poloViews) {
-    view.style.setProperty("--polo-image", `url("assets/polo-cerezas-${file}.webp")`);
-    view.setAttribute(
-      "aria-label",
-      `Vista ${viewNames[currentPoloView].toLowerCase()} del polo MODAC`,
-    );
+    const image = view.querySelector("img");
+    if (image && image.src !== source) image.src = source;
+    view.setAttribute("aria-label", `Polo MODAC · ${viewNames[currentPoloView]}`);
   }
   document.querySelectorAll(".polo-carousel-dots").forEach((dots) => {
     [...dots.children].forEach((dot, dotIndex) => {
