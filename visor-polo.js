@@ -3,7 +3,16 @@ const poloZoom = document.querySelector("#poloZoom");
 const viewNames = ["Frente", "Manga", "Espalda"];
 let currentPoloView = 0;
 let pointerStart;
-let paused = false;
+let paused = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const poloPlayback = document.querySelector("#poloPlayback");
+
+function setPoloPaused(value) {
+  paused = value;
+  poloPlayback.textContent = paused ? "Reproducir" : "Pausar";
+}
+
+poloPlayback.addEventListener("click", () => setPoloPaused(!paused));
+setPoloPaused(paused);
 const viewFiles = ["frente-volumen", "manga", "espalda-cherry-club"];
 
 function showPoloView(index) {
@@ -27,7 +36,7 @@ function showPoloView(index) {
 document.querySelectorAll("[data-polo-step]").forEach((button) => {
   button.addEventListener("click", () => {
     showPoloView(currentPoloView + Number(button.dataset.poloStep));
-    paused = true;
+    setPoloPaused(true);
   });
 });
 
@@ -39,7 +48,7 @@ for (const view of poloViews) {
     )
       return;
     pointerStart = { id: event.pointerId, x: event.clientX, y: event.clientY };
-    view.setPointerCapture(event.pointerId);
+    view.setPointerCapture?.(event.pointerId);
   });
   view.addEventListener("pointerup", (event) => {
     if (pointerStart?.id !== event.pointerId) return;
@@ -51,9 +60,9 @@ for (const view of poloViews) {
       Math.abs(horizontal) > Math.abs(vertical)
     ) {
       showPoloView(currentPoloView + (horizontal < 0 ? 1 : -1));
-      paused = true;
+      setPoloPaused(true);
     } else if (Math.hypot(horizontal, vertical) < 8) {
-      paused = !paused;
+      setPoloPaused(!paused);
     }
   });
   view.addEventListener("lostpointercapture", () => {
@@ -62,12 +71,12 @@ for (const view of poloViews) {
   view.addEventListener("keydown", (event) => {
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
-      paused = !paused;
+      setPoloPaused(!paused);
     }
     if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
       event.preventDefault();
       showPoloView(currentPoloView + (event.key === "ArrowRight" ? 1 : -1));
-      paused = true;
+      setPoloPaused(true);
     }
   });
 }
@@ -79,11 +88,9 @@ document
   .querySelector("#closePoloZoom")
   .addEventListener("click", () => poloZoom.close());
 
-if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  window.setInterval(() => {
+window.setInterval(() => {
     if (!document.hidden && !paused)
       showPoloView(currentPoloView + 1);
-  }, 2500);
-}
+}, 2500);
 
 showPoloView(0);

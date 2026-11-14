@@ -239,3 +239,20 @@ body > footer.modac-footer a { color: #fff; font-weight: 700; }
 
 main #coleccion .section-heading h2::after { content: none; }
 #coleccion .card-product-name { font-weight: 800; }
+
+#coverflow, .polo-vista { touch-action: pan-y; }
+.polo-view-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+}
+.polo-view-controls button, #carouselPlayback {
+  min-height: 44px;
+  padding: 6px 10px;
+  border: 1px solid #e7bac6;
+  border-radius: 8px;
+  background: #fff;
+  color: #650d27;
+}

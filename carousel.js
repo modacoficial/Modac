@@ -3,6 +3,7 @@ const carouselCards = new Map();
 let slides = [];
 let slideIndex = 0;
 let slideTimer;
+let carouselPlaying = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let lastDirection = 1;
 
 function initCarousel() {
@@ -26,6 +27,12 @@ function initCarousel() {
     button.hidden = slides.length < 2;
     button.onclick = () => moveSlide(Number(button.dataset.carouselStep));
   });
+  const playback = $("#carouselPlayback");
+  playback.hidden = slides.length < 2;
+  playback.onclick = () => {
+    carouselPlaying = !carouselPlaying;
+    syncCarousel();
+  };
   const track = $("#coverflow");
   let touchStart;
   track.addEventListener("touchstart", (event) => {
@@ -147,7 +154,7 @@ function moveSlide(step) {
 
 function syncCarousel() {
   clearInterval(slideTimer);
-  if (!document.hidden && slides.length > 1 &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+  $("#carouselPlayback").textContent = carouselPlaying ? "Pausar" : "Reproducir";
+  if (!document.hidden && slides.length > 1 && carouselPlaying)
     slideTimer = setInterval(() => moveSlide(1), carouselInterval);
 }
