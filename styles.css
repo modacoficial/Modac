@@ -5,3 +5,10 @@
 @import url("styles/catalogo-y-personalizacion.css?v=visor10");
 @import url("styles/ajustes-finales.css?v=20261114-encabezado");
 @import url("styles/promocion-duo.css?v=catalogo-v11");
+
+/* MODAC: ocultar controles de carrusel */
+#carouselPlayback,
+#poloPlayback,
+.polo-view-controls {
+  display: none !important;
+}
