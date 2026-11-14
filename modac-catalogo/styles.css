@@ -1,7 +1,0 @@
-/* El orden de carga conserva la prioridad de los estilos existentes. */
-@import url("styles/base.css");
-@import url("styles/portada-y-fichas.css");
-@import url("styles/identidad-y-visor.css");
-@import url("styles/catalogo-y-personalizacion.css");
-@import url("styles/ajustes-finales.css?v=20261114-encabezado");
-@import url("styles/promocion-duo.css?v=curva");
