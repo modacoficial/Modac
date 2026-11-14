@@ -302,40 +302,19 @@ $("#quoteForm").addEventListener("submit", (event) => {
   event.preventDefault();
   const form = event.currentTarget;
   const status = $("#quoteStatus");
-  const file = form.elements.artwork.files[0];
-  if (!form.reportValidity()) return;
-  if (!file) {
-    status.textContent = "Adjunta tu diseño para continuar.";
-    return;
-  }
-  if (file.size > 10 * 1024 * 1024) {
-    status.textContent = "El archivo supera el límite de 10 MB.";
-    return;
-  }
-  const allowed = /\.(png|jpe?g|webp|pdf)$/i;
-  if (!allowed.test(file.name)) {
-    status.textContent = "Adjunta una imagen PNG, JPG, WEBP o un PDF.";
-    return;
-  }
-  if (!data) {
-    status.textContent =
-      "Espera a que cargue el catálogo e inténtalo de nuevo.";
-    return;
-  }
+  if (!form.reportValidity() || !data) return;
   const values = new FormData(form);
   const message = [
     "¡Hola, MODAC! Quiero cotizar un estampado personalizado.",
     `Nombre: ${values.get("name").trim()}`,
     `WhatsApp: ${values.get("phone").trim()}`,
     `Talla: ${values.get("size")}`,
-    `Cantidad: ${values.get("quantity")}`,
-    `Diseño: ${values.get("design").trim()}`,
-    `Archivo para adjuntar: ${file.name}`,
+    `Color: ${values.get("color")}`,
   ].join("\n");
   const url = `https://wa.me/${data.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank", "noopener,noreferrer");
   status.textContent =
-    "Se abrió WhatsApp. Adjunta allí el archivo de diseño seleccionado.";
+    "Se abrió WhatsApp. Adjunta tu diseño en PNG en el chat.";
 });
 fetch("productos.json", { cache: "no-cache" })
   .then((r) => {
@@ -368,6 +347,19 @@ fetch("productos.json", { cache: "no-cache" })
     const variants = d.productos
       .filter(visible)
       .flatMap((p) => p.variantes.filter((v) => v.visible));
+    const quoteColor = $("#quoteColor");
+    const colors = new Map();
+    for (const variant of variants) {
+      const color = variant.color?.trim();
+      if (color) colors.set(color.toLocaleLowerCase("es"), color);
+    }
+    quoteColor.options[0].textContent = colors.size
+      ? "Selecciona un color"
+      : "No hay colores disponibles";
+    for (const color of [...colors.values()].sort((a, b) => a.localeCompare(b, "es"))) {
+      quoteColor.add(new Option(color, color));
+    }
+    quoteColor.disabled = $("#quoteSubmit").disabled = !colors.size;
     const sizes = [
       ...new Set(
         variants
@@ -395,8 +387,8 @@ fetch("productos.json", { cache: "no-cache" })
         selectVariant(variantId);
     }
   })
-  .catch(
-    () =>
-      ($("#products").innerHTML =
-        '<p class="empty">No pudimos cargar el catálogo. Actualiza la página o inténtalo más tarde.</p>'),
-  );
+  .catch(() => {
+    $("#quoteColor").options[0].textContent = "No se pudieron cargar los colores";
+    $("#products").innerHTML =
+      '<p class="empty">No pudimos cargar el catálogo. Actualiza la página o inténtalo más tarde.</p>';
+  });

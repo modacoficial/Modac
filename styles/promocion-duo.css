@@ -156,3 +156,83 @@ main .duo-hero .coverflow .coverflow-card {
 @media (max-width: 760px) {
   main > .duo-hero { grid-template-columns: minmax(0, 1fr); }
 }
+
+.site-header nav a {
+  font-weight: 800;
+  text-transform: uppercase;
+}
+main :is(.duo-hero h1, #personalizaTitle)::after { content: none; }
+#coleccion .section-heading { border-bottom: 2px solid #8e1132; }
+#coleccion .card-photo {
+  background: #e9e5e1;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+#coleccion .card-photo img {
+  object-fit: contain;
+  padding: 3%;
+  transform: none;
+  transition: transform 240ms ease;
+}
+#coleccion .card-product-name { color: #8e1132; }
+#coleccion .card-price { color: #171717; }
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  #coleccion .card:hover .card-photo img {
+    transform: scale(1.055);
+    transform-origin: 50% 42%;
+  }
+}
+
+main .duo-hero .coverflow .coverflow-card {
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+  scale: calc(1 - var(--distance) * .05);
+}
+main .duo-hero .coverflow-card[data-offset="0"] {
+  background: radial-gradient(ellipse, #ffe8b994, transparent 72%);
+}
+main .duo-hero .coverflow-card[data-offset="0"] img {
+  filter: drop-shadow(0 13px 10px rgba(58, 43, 39, .22));
+}
+
+#personaliza .polo-visor { background: #faf0ef; }
+#personaliza .personaliza-texto,
+#personaliza .quote-form :is(input, select) { background: #fff; }
+#quoteSubmit,
+.modac-footer .footer-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem;
+}
+#quoteSubmit svg,
+.modac-footer svg { width: 23px; height: 23px; flex: none; }
+
+body > footer.modac-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px 24px;
+  padding: 8px clamp(16px, 5vw, 72px);
+  background: #650d27;
+  border-top: 2px solid #e2b751;
+  color: #fff;
+}
+.modac-footer .footer-logo {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+.modac-footer nav { display: flex; gap: clamp(12px, 3vw, 40px); }
+body > footer.modac-footer a { color: #fff; font-weight: 700; }
+.modac-footer .footer-whatsapp {
+  border: 2px solid #e2b751;
+  border-radius: 999px;
+  padding: 7px 15px;
+}
+@media (max-width: 560px) {
+  body > footer.modac-footer { justify-content: center; }
+}

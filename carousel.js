@@ -1,5 +1,4 @@
 const carouselInterval = 2000;
-const compactCarousel = window.matchMedia("(max-width: 760px)");
 const carouselCards = new Map();
 let slides = [];
 let slideIndex = 0;
@@ -45,7 +44,6 @@ function initCarousel() {
     }
   }, { passive: false });
   showSlide();
-  compactCarousel.addEventListener("change", showSlide);
   document.addEventListener("visibilitychange", syncCarousel);
   syncCarousel();
 }
@@ -89,7 +87,7 @@ function carouselIndex(index) {
 function showSlide() {
   const track = $("#coverflow");
   const visibleCards = new Set();
-  const visibleCount = Math.min(compactCarousel.matches ? 3 : 5, slides.length);
+  const visibleCount = Math.min(3, slides.length);
   const start = -Math.floor(visibleCount / 2);
   for (let offset = start; offset < start + visibleCount; offset++) {
     const index = carouselIndex(slideIndex + offset);

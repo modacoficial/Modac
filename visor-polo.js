@@ -83,7 +83,7 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
   window.setInterval(() => {
     if (!document.hidden && !paused)
       showPoloView(currentPoloView + 1);
-  }, 3000);
+  }, 2500);
 }
 
 showPoloView(0);
