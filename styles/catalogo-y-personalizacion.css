@@ -1596,7 +1596,7 @@ footer a:hover {
   aspect-ratio: 680 / 887;
   border: 0;
   box-shadow: none;
-  background: transparent var(--polo-image, url("../assets/polo-cerezas-frente.webp")) center / contain no-repeat;
+  background: transparent;
 }
 
 #personaliza .polo-expand {

@@ -1146,8 +1146,7 @@ footer .footer-logo {
   margin-inline: auto;
   aspect-ratio: 675 / 887;
   border-radius: 14px;
-  background: #faead5 url("../assets/polo-cerezas-vistas.png") no-repeat 0%
-    center / auto 100%;
+  background: transparent;
   touch-action: pan-y;
   cursor: grab;
 }

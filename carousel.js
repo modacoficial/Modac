@@ -59,7 +59,7 @@ function alternatePolos(items) {
     v.color.toLowerCase().replace(/azul marino.*/, "azul marino");
   const different = (a, b) => a.p.id !== b.p.id && color(a) !== color(b);
   while (remaining.length) {
-    const previous = ordered.at(-1);
+    const previous = ordered[ordered.length - 1];
     const recent = ordered.slice(-2);
     const preferences = [
       (item) => recent.every((shown) => different(item, shown)),

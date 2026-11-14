@@ -1264,7 +1264,6 @@ footer a:hover {
 .polo-vista {
   width: 100%;
   aspect-ratio: 0.72;
-  background-image: url("../assets/polo-cerezas-vistas.png");
   background-position: var(--polo-position, 0%) center;
   background-size: 300% 100%;
   background-repeat: no-repeat;

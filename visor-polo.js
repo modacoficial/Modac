@@ -4,12 +4,12 @@ const viewNames = ["Frente", "Manga", "Espalda"];
 let currentPoloView = 0;
 let pointerStart;
 let paused = false;
-const viewFiles = ["frente", "manga", "espalda-cherry-club"];
+const viewFiles = ["frente-volumen", "manga", "espalda-cherry-club"];
 
 function showPoloView(index) {
   currentPoloView = (index + viewNames.length) % viewNames.length;
   const source = new URL(
-    `./assets/polo-cerezas-${viewFiles[currentPoloView]}.webp?v=2`,
+    `./assets/polo-cerezas-${viewFiles[currentPoloView]}.webp?v=9`,
     document.baseURI,
   ).href;
   for (const view of poloViews) {
