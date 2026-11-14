@@ -9,7 +9,7 @@ const viewFiles = ["frente", "manga", "espalda-cherry-club"];
 function showPoloView(index) {
   currentPoloView = (index + viewNames.length) % viewNames.length;
   const source = new URL(
-    `./assets/polo-cerezas-${viewFiles[currentPoloView]}.webp`,
+    `./assets/polo-cerezas-${viewFiles[currentPoloView]}.webp?v=2`,
     document.baseURI,
   ).href;
   for (const view of poloViews) {

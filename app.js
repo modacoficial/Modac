@@ -298,16 +298,24 @@ $("#share").onclick = async () => {
   }
 };
 $("#size").onchange = render;
+const quotePhone = $("#quoteForm").elements.phone;
+quotePhone.addEventListener("input", () => {
+  quotePhone.value = quotePhone.value.replace(/[^0-9]/g, "");
+  quotePhone.setCustomValidity("");
+});
 $("#quoteForm").addEventListener("submit", (event) => {
   event.preventDefault();
   const form = event.currentTarget;
   const status = $("#quoteStatus");
+  quotePhone.setCustomValidity(/^9[0-9]{8}$/.test(quotePhone.value)
+    ? ""
+    : "Ingresa un celular de 9 dígitos que empiece con 9.");
   if (!form.reportValidity() || !data) return;
   const values = new FormData(form);
   const message = [
     "¡Hola, MODAC! Quiero cotizar un estampado personalizado.",
     `Nombre: ${values.get("name").trim()}`,
-    `WhatsApp: ${values.get("phone").trim()}`,
+    `WhatsApp: +51 ${values.get("phone")}`,
     `Talla: ${values.get("size")}`,
     `Color: ${values.get("color")}`,
   ].join("\n");

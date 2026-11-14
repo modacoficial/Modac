@@ -7,13 +7,13 @@
       name="description"
       content="Polos de dama en tendencia y estampados personalizados. Descubre MODAC y cotiza tu diseño por WhatsApp." /><title
       >MODAC · Polos de dama y estampados personalizados</title
-    ><link rel="stylesheet" href="styles.css?v=catalogo-v4" /><script
-      src="app.js?v=catalogo-v4"
+    ><link rel="stylesheet" href="styles.css?v=catalogo-v6" /><script
+      src="app.js?v=catalogo-v6"
       defer
     ></script
-    ><script src="carousel.js?v=catalogo-v4" defer></script
+    ><script src="carousel.js?v=catalogo-v6" defer></script
     ><script
-      src="visor-polo.js?v=catalogo-v4"
+      src="visor-polo.js?v=catalogo-v6"
       defer
     ></script></head
   ><body>
@@ -78,7 +78,7 @@
               tabindex="0"
               aria-label="Vista frontal del polo MODAC"
             >
-              <img src="./assets/polo-cerezas-frente.webp" alt="" />
+              <img src="./assets/polo-cerezas-frente.webp?v=2" alt="" />
             </div>
             <button
               class="polo-expand"
@@ -110,14 +110,14 @@
                 placeholder="Nombre"
             /></label>
             <label
-              >WhatsApp<input
+              >WhatsApp <span aria-hidden="true">(+51)</span><input
                 name="phone"
                 type="tel"
                 autocomplete="tel"
                 required
-                inputmode="tel"
-                pattern="[+0-9 ()-]{7,20}"
-                placeholder="+51 999 999 999"
+                inputmode="numeric"
+                pattern="9[0-9]{8}" maxlength="9"
+                placeholder="999999999" title="Ingresa un celular de 9 dígitos que empiece con 9"
             /></label>
             </div>
             <div class="quote-row">
@@ -203,7 +203,7 @@
         tabindex="0"
         aria-label="Vista ampliada del polo MODAC"
       >
-              <img src="./assets/polo-cerezas-frente.webp" alt="" />
+              <img src="./assets/polo-cerezas-frente.webp?v=2" alt="" />
             </div
       ><p>Toca el polo para pausar o reanudar. Arrastra para cambiar de vista.</p></dialog
     >

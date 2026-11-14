@@ -236,3 +236,6 @@ body > footer.modac-footer a { color: #fff; font-weight: 700; }
 @media (max-width: 560px) {
   body > footer.modac-footer { justify-content: center; }
 }
+
+main #coleccion .section-heading h2::after { content: none; }
+#coleccion .card-product-name { font-weight: 800; }
