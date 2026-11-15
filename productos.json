@@ -265,7 +265,7 @@
       "id": "diseno-14",
       "nombre": "Lazo en líneas blancas",
       "categoria": "Cerezas y lazos",
-      "visible": true,
+      "visible": false,
       "variantes": [
         {
           "id": "MODAC-018",
