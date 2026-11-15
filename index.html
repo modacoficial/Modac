@@ -7,8 +7,8 @@
       name="description"
       content="Polos de dama en tendencia y estampados personalizados. Descubre MODAC y cotiza tu diseño por WhatsApp." /><title
       >MODAC · Polos de dama y estampados personalizados</title
-    ><link rel="stylesheet" href="styles.css?v=catalogo-v11" /><script
-      src="app.js?v=catalogo-v11"
+    ><link rel="stylesheet" href="styles.css?v=contenido-v1" /><script
+      src="app.js?v=contenido-v1"
       defer
     ></script
     ><script src="carousel.js?v=catalogo-v11" defer></script
@@ -31,6 +31,11 @@
         Mi selección <span id="bagCount">0</span>
       </button>
     </header>
+    <aside id="storeBanner" class="store-banner" aria-label="Anuncio de MODAC" hidden>
+      <strong id="storeBannerTitle"></strong>
+      <span id="storeBannerMessage"></span>
+      <a id="storeBannerAction" hidden></a>
+    </aside>
     <div class="category-nav"><div id="categories" class="chips"></div></div
     ><main
       ><section class="hero duo-hero" aria-labelledby="hero-title">
@@ -38,6 +43,7 @@
           <h1 id="hero-title">Elige tu estilo</h1>
           <p class="duo-material">Polos de algodón peinado jersey 30/1</p>
           <p class="duo-offer">2 polos x <strong style="font-family: Arial, sans-serif">s/35.00</strong></p>
+          <p id="promoDescription" hidden></p>
           <a class="duo-action" href="#coleccion">Arma tu dúo</a>
         </div>
         <div class="hero-images" role="region" aria-roledescription="carrusel" aria-label="Polos de la colección">
@@ -102,7 +108,7 @@
           <p class="eyebrow">HECHO PARA TI</p>
           <h2 id="personalizaTitle">Personaliza tu estampado</h2>
           <p
-            >Cuéntanos qué diseño imaginas. Completa los datos y comparte tu
+             id="customDescription">Cuéntanos qué diseño imaginas. Completa los datos y comparte tu
             referencia para cotizar tu polo personalizado.</p
           >
           <form id="quoteForm" class="quote-form" novalidate>

@@ -324,6 +324,32 @@ $("#quoteForm").addEventListener("submit", (event) => {
   status.textContent =
     "Se abrió WhatsApp. Adjunta tu diseño en PNG en el chat.";
 });
+function renderStoreContent(d) {
+  const { personalizacion, promocion, anuncio } = d.contenido || {};
+  if (personalizacion?.titulo)
+    $("#personalizaTitle").textContent = personalizacion.titulo;
+  if (personalizacion?.descripcion)
+    $("#customDescription").textContent = personalizacion.descripcion;
+  if (promocion?.descripcion) {
+    $("#promoDescription").textContent = promocion.descripcion;
+    $("#promoDescription").hidden = false;
+  }
+  if (anuncio?.activo !== true || !anuncio.titulo || !anuncio.mensaje) return;
+  $("#storeBannerTitle").textContent = anuncio.titulo;
+  $("#storeBannerMessage").textContent = anuncio.mensaje;
+  const link = $("#storeBannerAction");
+  if (anuncio.accion === "catalogo") {
+    link.href = "#coleccion";
+    link.textContent = "Ver catálogo";
+    link.hidden = false;
+  } else if (anuncio.accion === "whatsapp" && /^\d+$/.test(d.whatsapp)) {
+    link.href = "https://wa.me/" + d.whatsapp;
+    link.textContent = "Pedir por WhatsApp";
+    link.hidden = false;
+  }
+  $("#storeBanner").hidden = false;
+}
+
 fetch("productos.json", { cache: "no-cache" })
   .then((r) => {
     if (!r.ok) throw Error();
@@ -331,6 +357,7 @@ fetch("productos.json", { cache: "no-cache" })
   })
   .then((d) => {
     data = d;
+    renderStoreContent(d);
     $("#categories").innerHTML = [
       "",
       ...new Set(d.productos.filter(visible).map((p) => p.categoria)),

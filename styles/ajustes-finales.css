@@ -713,3 +713,21 @@ main .hero-images .coverflow {
     font-size: 13px;
   }
 }
+
+.store-banner:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: .4rem 1rem;
+  padding: .75rem 1rem;
+  background: #770024;
+  color: #fff;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.store-banner a {
+  color: inherit;
+  text-decoration: underline;
+}

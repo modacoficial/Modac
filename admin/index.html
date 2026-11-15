@@ -5,133 +5,82 @@
       name="viewport"
       content="width=device-width,initial-scale=1" /><title
       >Administrar · MODAC</title
-    ><meta name="robots" content="noindex,nofollow" /><link
-      rel="stylesheet"
-      href="../styles.css" /><style>
-      main {
-        max-width: 1000px;
-        margin: 40px auto;
-        padding: 0 20px;
-      }
-      section {
-        padding: 25px;
-        background: white;
-        border: 1px solid #e5ddd5;
-        border-radius: 10px;
-        margin-bottom: 20px;
-      }
-      input,
-      select {
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        width: 100%;
-        margin: 7px 0 15px;
-      }
-      label {
-        display: block;
-        font-size: 13px;
-      }
-      input[type="checkbox"] {
-        width: auto;
-      }
-      h1 {
-        font-size: 36px;
-      }
-      h2 {
-        font-size: 25px;
-      }
-      .row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-      }
-      .product {
-        border-top: 1px solid #ddd;
-        padding: 18px 0;
-      }
-      .product button {
-        margin: 5px;
-        padding: 9px;
-        border: 1px solid #ddd;
-        background: #faf7f2;
-        border-radius: 5px;
-      }
-      .product img {
-        width: 55px;
-        vertical-align: middle;
-        margin-right: 12px;
-      }
-      .variant {
-        padding: 8px;
-        background: #faf7f2;
-        margin: 8px 0;
-      }
-      .status {
-        line-height: 1.7;
-        font-size: 13px;
-      }
-      #editor {
-        max-width: 600px;
-      }
-      .danger {
-        color: #ab151b;
-      }
-      header a {
-        font-size: 14px;
-      }
-      @media (max-width: 600px) {
-        .row {
-          grid-template-columns: 1fr;
-        }
-      }</style
-    ><script src="admin.js" defer></script></head
+    ><meta name="robots" content="noindex,nofollow" /><link rel="stylesheet" href="admin.css?v=2" />
+    <script src="admin.js?v=admin-v2" defer></script></head
   ><body
-    ><header
-      ><strong>MODAC · Administración</strong
-      ><a href="../">Ver catálogo ↗</a></header
-    ><main
-      ><h1>Tu colección, a tu manera.</h1
-      ><p>Agrega fotos, organiza diseños y decide qué se muestra.</p
+    >
+    <header class="topbar"><div class="topbar-inner">
+      <a class="brand" href="../"><img src="../assets/marca/logo.png" alt="MODAC"><span>Administración</span></a>
+      <a class="button secondary" href="../" data-icon="external">Ver tienda</a>
+    </div></header>
+    <main>
+      <section class="intro">
+        <div><h1>Panel de administración</h1><p>Gestiona tus diseños, promociones y anuncios de MODAC.</p></div>
+        <img src="../assets/polo-cerezas-frente-volumen.webp" alt="">
+      </section
       ><section id="login"
         ><h2>Bienvenido a MODAC</h2
         ><p
           >Inicia sesión con tu cuenta de GitHub para administrar tus diseños,
           colores y tallas.</p
-        ><button class="button" id="githubLogin"
-          >Iniciar sesión con GitHub ↗</button
+        ><button class="button" id="githubLogin" data-icon="external"
+          >Iniciar sesión con GitHub</button
         ><p id="authNotice" class="muted"></p
         ><p
           >También puedes
-          <button id="localPreview" class="text-button"
+          <button id="localPreview" data-icon="eye" class="text-button"
             >explorar el panel en modo demostración</button
           >.</p
         ><small
           >La demostración permite probar el panel sin publicar cambios.</small
         ></section
       ><section id="workspace" hidden
-        ><div class="row"
+        ><div class="workspace-head"
           ><h2>Diseños y variantes</h2
-          ><div
-            ><button class="button" id="newProduct">+ Nuevo diseño</button
-            ><button class="text-button" id="logout">Cerrar sesión</button></div
+          ><div class="toolbar"
+            ><button class="button" id="newProduct" data-icon="plus">Nuevo diseño</button
+            ><button class="text-button" id="logout" data-icon="logout">Cerrar sesión</button></div
           ></div
-        ><p class="muted"
-          >Ocultar conserva las fotos y los datos. Eliminar retira la variante
-          del catálogo; la foto permanece en GitHub para evitar pérdidas.</p
         ><label
           >Buscar por diseño, código, color o talla<input
             id="inventorySearch"
             type="search"
             placeholder="Ej. Cerezas o MODAC-013" /></label
-        ><button id="openAd" class="button" type="button"
+        ><button id="openAd" data-icon="megaphone" class="button" type="button"
           >Preparar anuncio</button
+        >
+        <details>
+          <summary data-icon="settings">Contenido de la tienda</summary>
+          <form id="storeContent">
+            <label>Título de Personaliza tu polo<input id="customTitle" required maxlength="100" placeholder="Personaliza tu estampado"></label>
+            <label>Descripción de Personaliza tu polo<textarea id="customDescription" required maxlength="400" rows="3"></textarea></label>
+            <label>Descripción de la promoción 2×35<textarea id="promoDescription" maxlength="300" rows="2"></textarea></label>
+            <fieldset>
+              <legend>Anuncio en la tienda</legend>
+              <label>Título<input id="bannerTitle" maxlength="100"></label>
+              <label>Mensaje<textarea id="bannerMessage" maxlength="300" rows="2"></textarea></label>
+              <label>Botón<select id="bannerAction">
+                <option value="">Sin botón</option>
+                <option value="catalogo">Ver catálogo</option>
+                <option value="whatsapp">Pedir por WhatsApp</option>
+              </select></label>
+              <label><input type="checkbox" id="bannerActive"> Mostrar el anuncio al publicar</label>
+              <button type="button" id="previewBanner" data-icon="eye">Previsualizar anuncio</button>
+              <section id="bannerPreview" hidden aria-live="polite">
+                <strong id="previewBannerTitle"></strong>
+                <p id="previewBannerMessage"></p>
+                <span id="previewBannerAction"></span>
+              </section>
+            </fieldset>
+            <button class="button" type="submit" data-icon="save">Guardar contenido en mi borrador</button>
+            <p id="contentStatus" role="status"></p>
+          </form>
+        </details
         ><div id="adminProducts"></div
-        ><button id="publish" class="button">Guardar y publicar cambios</button
-        ><p id="dirty" class="status"></p></section
+        ><div class="publish-bar"><p id="dirty" class="status" role="status"></p><button id="publish" data-icon="upload" class="button">Guardar y publicar cambios</button></div></section
       ><p id="status" class="status" role="status"></p></main
     ><dialog id="editor"
-      ><button class="close" id="cancelEditor" aria-label="Cerrar">×</button
+      ><button class="close icon-button" id="cancelEditor" data-icon="close" aria-label="Cerrar" title="Cerrar"></button
       ><h2 id="editorTitle">Nuevo diseño</h2
       ><form id="editForm"
         ><label
@@ -178,9 +127,9 @@
             ><input type="checkbox" id="showVariant" checked /> Mostrar esta
             variante</label
           ></div
-        ><button class="button" type="submit">Guardar en mi borrador</button
+        ><button class="button" type="submit" data-icon="save">Guardar en mi borrador</button
         ><p class="muted"
-          >Para publicar el borrador, usa “Guardar y publicar cambios”.</p
+           id="editorStatus" role="status">Para publicar el borrador, usa “Guardar y publicar cambios”.</p
         ></form
       ></dialog
     ><dialog id="confirm"
@@ -188,8 +137,8 @@
       ><p
         >Dejará de formar parte del catálogo. Puedes ocultarla si deseas
         recuperarla después.</p
-      ><button id="confirmDelete" class="button">Eliminar variante</button
-      ><button id="cancelDelete" class="text-button">Cancelar</button></dialog
+      ><button id="confirmDelete" data-icon="trash" class="button">Eliminar variante</button
+      ><button id="cancelDelete" data-icon="close" class="text-button">Cancelar</button></dialog
     ><dialog id="adEditor" aria-labelledby="adTitle">
       <h2 id="adTitle">Preparar anuncio</h2>
       <label
@@ -217,7 +166,7 @@
           style="width: 100%; font: inherit"
         ></textarea>
       </label>
-      <button id="copyAd" class="button" type="button">Copiar texto</button>
-      <button id="closeAd" class="text-button" type="button">Cerrar</button>
+      <button id="copyAd" data-icon="copy" class="button" type="button">Copiar texto</button>
+      <button id="closeAd" data-icon="close" class="text-button" type="button">Cerrar</button>
       <p id="adStatus" role="status"></p> </dialog></body
 ></html>

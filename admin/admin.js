@@ -7,6 +7,36 @@ const esc = (s) =>
         c
       ],
   );
+const iconPaths = {
+  external: "M13 5h6v6m0-6-9 9m7-1v6H5V7h6",
+  plus: "M12 5v14M5 12h14",
+  logout: "M10 4H5v16h5m2-8h8m-3-3 3 3-3 3",
+  megaphone: "M4 10v4h4l8 4V6l-8 4H4zm4 4 2 5m9-9 2-2m-2 6 2 2",
+  upload: "M12 16V4m-4 4 4-4 4 4M5 15v5h14v-5",
+  save: "M5 4h12l3 3v13H4V4h1zm3 0v6h8V4M8 20v-6h8v6",
+  eye: "M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6zm13 0a3 3 0 1 0-6 0 3 3 0 0 0 6 0z",
+  eyeOff: "m3 3 18 18M9 6a11 11 0 0 1 3 0c6 0 10 6 10 6a18 18 0 0 1-3 3m-3 2a10 10 0 0 1-4 1c-6 0-10-6-10-6a18 18 0 0 1 4-4",
+  edit: "m4 16 12-12 4 4-12 12H4zm10-10 4 4",
+  trash: "M4 7h16m-10 0V4h4v3M6 7l1 13h10l1-13m-8 4v5m4-5v5",
+  close: "m6 6 12 12M18 6 6 18",
+  copy: "M9 9h11v11H9zM15 6V4H4v11h2",
+  settings: "M4 6h16M4 12h16M4 18h16M8 4v4m8 2v4m-6 2v4",
+};
+
+function icon(name) {
+  return `<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="${iconPaths[name]}"></path></svg>`;
+}
+
+document.querySelectorAll("[data-icon]").forEach((element) => {
+  element.insertAdjacentHTML("afterbegin", icon(element.dataset.icon));
+});
+
+function inventoryButton(action, product, variant, glyph, label) {
+  return `<button type="button" class="icon-button ${action === "deleteV" ? "danger" : ""}"
+    data-a="${action}" data-p="${esc(product)}" data-v="${esc(variant || "")}"
+    aria-label="${esc(label)}" title="${esc(label)}">${icon(glyph)}</button>`;
+}
+
 let catalog,
   token = "",
   repo = "",
@@ -48,10 +78,12 @@ async function api(path, method = "GET", body) {
       r.status === 401
         ? "La sesión venció. Vuelve a iniciar sesión con GitHub."
         : r.status === 403
-          ? "Tu cuenta no tiene permiso para modificar este repositorio."
+          ? "GitHub rechazó el acceso. Verifica la instalación de MODAC Admin y el permiso Contents: Read and write."
           : r.status === 404
-            ? "No se encontró el repositorio, la rama o el catálogo."
-            : `GitHub respondió ${r.status}. No se publicaron los cambios.`,
+            ? "GitHub no encontró el recurso. Verifica el repositorio, la rama y el acceso de la aplicación."
+            : r.status === 409 || r.status === 422
+              ? "GitHub rechazó el cambio. Revisa si la rama avanzó o tiene reglas de protección."
+              : `GitHub respondió ${r.status}. No se publicaron los cambios.`,
     );
   return r.status === 204 ? null : r.json();
 }
@@ -63,6 +95,8 @@ function decode64(s) {
 function start() {
   $("#login").hidden = true;
   $("#workspace").hidden = false;
+  loadStoreContent();
+  $("#dirty").textContent = "";
   render();
   status(
     demo
@@ -179,7 +213,26 @@ function render() {
   $("#adminProducts").innerHTML = matchingProducts
     .map(
       (p) =>
-        `<article class="product"><h3>${esc(p.nombre)} ${p.visible ? "" : "· OCULTO"}</h3><button data-a="toggleP" data-p="${esc(p.id)}">${p.visible ? "Ocultar diseño" : "Mostrar diseño"}</button><button data-a="editP" data-p="${esc(p.id)}">Editar diseño</button><button data-a="addV" data-p="${esc(p.id)}">+ Agregar color / talla</button>${p.variantes.map((v) => `<div class="variant"><img src="${uploads.get(v.foto)?.preview || safePhoto(v.foto)}" alt="${esc(v.color)}"><span>${esc(v.color)} · ${esc(v.talla)} · S/ ${Number(v.precio).toFixed(2)} · ${v.visible ? "Visible" : "Oculta"}</span><button data-a="editV" data-p="${esc(p.id)}" data-v="${esc(v.id)}">Editar</button><button data-a="toggleV" data-p="${esc(p.id)}" data-v="${esc(v.id)}">${v.visible ? "Ocultar" : "Mostrar"}</button><button class="danger" data-a="deleteV" data-p="${esc(p.id)}" data-v="${esc(v.id)}">Eliminar</button></div>`).join("")}</article>`,
+        `<article class="product">
+          <div class="product-head">
+            <div><h3>${esc(p.nombre)}</h3><p>${esc(p.categoria)}${p.visible ? "" : " · Oculto"}</p></div>
+            <div class="icon-group">
+              ${inventoryButton("toggleP", p.id, "", p.visible ? "eyeOff" : "eye", p.visible ? "Ocultar diseño" : "Mostrar diseño")}
+              ${inventoryButton("editP", p.id, "", "edit", "Editar diseño")}
+              ${inventoryButton("addV", p.id, "", "plus", "Agregar color o talla")}
+            </div>
+          </div>
+          ${p.variantes.map((v) => `<div class="variant">
+            <img src="${esc(uploads.get(v.foto)?.preview || safePhoto(v.foto))}" alt="${esc(v.color)}">
+            <div class="variant-detail"><strong>${esc(v.color)} · ${esc(v.talla)}</strong>
+              <span>S/ ${Number(v.precio).toFixed(2)}${v.visible ? "" : " · Oculta"}</span></div>
+            <div class="icon-group">
+              ${inventoryButton("editV", p.id, v.id, "edit", "Editar variante")}
+              ${inventoryButton("toggleV", p.id, v.id, v.visible ? "eyeOff" : "eye", v.visible ? "Ocultar variante" : "Mostrar variante")}
+              ${inventoryButton("deleteV", p.id, v.id, "trash", "Eliminar variante")}
+            </div>
+          </div>`).join("")}
+        </article>`,
     )
     .join("");
   $("#adminProducts")
@@ -227,7 +280,11 @@ function openEditor(mode, p, v) {
   $("#name").value = p?.nombre || "";
   $("#category").value = p?.categoria || "Otros diseños";
   $("#showProduct").checked = p?.visible ?? true;
+  $("#editorStatus").textContent = "";
   $("#variantFields").hidden = mode === "editP";
+  $("#variantFields").querySelectorAll("input, select").forEach((field) => {
+    field.disabled = mode === "editP";
+  });
   $("#color").required = mode !== "editP";
   $("#name").readOnly = mode === "addV" || mode === "editV";
   $("#category").disabled = mode === "addV" || mode === "editV";
@@ -317,7 +374,7 @@ $("#editForm").onsubmit = async (e) => {
     changed();
     $("#editor").close();
   } catch (err) {
-    status(err.message);
+    $("#editorStatus").textContent = err.message;
   } finally {
     b.disabled = false;
   }
@@ -336,6 +393,7 @@ $("#publish").onclick = async () => {
   if (busy) return;
   busy = true;
   $("#publish").disabled = true;
+  $("#workspace").inert = true;
   try {
     status("Guardando en GitHub…");
     const ref = await api("git/ref/heads/" + encodeURIComponent(branch));
@@ -387,8 +445,58 @@ $("#publish").onclick = async () => {
     status(err.message + " Tus cambios siguen en el borrador de esta pestaña.");
   } finally {
     busy = false;
+    $("#workspace").inert = false;
     $("#publish").disabled = false;
   }
+};
+
+const defaultCustomDescription =
+  "Cuéntanos qué diseño imaginas. Completa los datos y comparte tu referencia para cotizar tu polo personalizado.";
+
+function loadStoreContent() {
+  const { personalizacion, promocion, anuncio } = catalog.contenido || {};
+  $("#customTitle").value = personalizacion?.titulo ?? "Personaliza tu estampado";
+  $("#customDescription").value = personalizacion?.descripcion ?? defaultCustomDescription;
+  $("#promoDescription").value = promocion?.descripcion ?? "";
+  $("#bannerTitle").value = anuncio?.titulo ?? "";
+  $("#bannerMessage").value = anuncio?.mensaje ?? "";
+  $("#bannerAction").value = anuncio?.accion ?? "";
+  $("#bannerActive").checked = anuncio?.activo === true;
+  $("#bannerPreview").hidden = true;
+  $("#contentStatus").textContent = "";
+}
+
+$("#previewBanner").onclick = () => {
+  $("#previewBannerTitle").textContent = $("#bannerTitle").value.trim();
+  $("#previewBannerMessage").textContent = $("#bannerMessage").value.trim();
+  const action = $("#bannerAction");
+  $("#previewBannerAction").textContent = action.value ? action.selectedOptions[0].text : "";
+  $("#bannerPreview").hidden = false;
+};
+
+$("#storeContent").onsubmit = (event) => {
+  event.preventDefault();
+  const titulo = $("#customTitle").value.trim();
+  const descripcion = $("#customDescription").value.trim();
+  const anuncio = {
+    titulo: $("#bannerTitle").value.trim(),
+    mensaje: $("#bannerMessage").value.trim(),
+    accion: $("#bannerAction").value,
+    activo: $("#bannerActive").checked,
+  };
+  if (!titulo || !descripcion || (anuncio.activo && (!anuncio.titulo || !anuncio.mensaje))) {
+    $("#contentStatus").textContent =
+      "Completa el título y la descripción de personalización. Un anuncio visible requiere título y mensaje.";
+    return;
+  }
+  catalog.contenido = {
+    ...catalog.contenido,
+    personalizacion: { titulo, descripcion },
+    promocion: { descripcion: $("#promoDescription").value.trim() },
+    anuncio,
+  };
+  changed();
+  $("#contentStatus").textContent = "Contenido agregado a tu borrador.";
 };
 
 const adEditor = $("#adEditor");
