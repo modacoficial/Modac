@@ -1,5 +1,5 @@
 {
-  "repo": "",
+  "repo": "modacoficial/Modac",
   "branch": "main",
-  "auth_url": ""
+  "auth_url": "https://modac-auth.modacoficial.workers.dev/login"
 }
