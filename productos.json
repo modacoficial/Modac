@@ -265,14 +265,14 @@
       "id": "diseno-14",
       "nombre": "Lazo en líneas blancas",
       "categoria": "Cerezas y lazos",
-      "visible": false,
+      "visible": true,
       "variantes": [
         {
           "id": "MODAC-018",
           "color": "Rojo",
           "talla": "M",
           "foto": "assets/productos/18_polo_rojo_lazo_en_lineas_blancas_talla_m_sin_fondo.webp",
-          "visible": false,
+          "visible": true,
           "precio": 19.9
         }
       ]
