@@ -272,7 +272,7 @@
           "color": "Rojo",
           "talla": "M",
           "foto": "assets/productos/18_polo_rojo_lazo_en_lineas_blancas_talla_m_sin_fondo.webp",
-          "visible": true,
+          "visible": false,
           "precio": 19.9
         }
       ]
@@ -368,7 +368,7 @@
           "color": "Beige",
           "talla": "M",
           "foto": "assets/productos/27_polo_beige_lazo_color_vino_talla_m_sin_fondo.webp",
-          "visible": false,
+          "visible": true,
           "precio": 19.9
         }
       ]
